@@ -40,7 +40,7 @@ type Status struct {
 }
 
 func GetStatus() (status Status, err error) {
-	err = Get(BaseUrl, &status)
+	err = get(BaseUrl, &status)
 	if err != nil {
 		return status, err
 	}

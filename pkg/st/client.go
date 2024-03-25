@@ -40,11 +40,11 @@ type Meta struct {
 	Limit int `json:"limit"`
 }
 
-func Get(url string, model any) error {
+func get(url string, model any) error {
 	return do(http.MethodGet, url, nil, model)
 }
 
-func Post(url string, body any, model any) error {
+func post(url string, body any, model any) error {
 	return do(http.MethodPost, url, body, model)
 }
 

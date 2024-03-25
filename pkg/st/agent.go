@@ -56,7 +56,7 @@ type agentDto struct {
 func GetAgent() (agent Agent, err error) {
 	var dto agentDto
 
-	err = Get(BaseUrl+"/my/agent", &dto)
+	err = get(BaseUrl+"/my/agent", &dto)
 	if err != nil {
 		return dto.Data, err
 	}
@@ -67,7 +67,7 @@ func GetAgent() (agent Agent, err error) {
 func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
 	var dto agentDto
 
-	err = Get(BaseUrl+"/agents/"+agentSymbol, &dto)
+	err = get(BaseUrl+"/agents/"+agentSymbol, &dto)
 	if err != nil {
 		return dto.Data, err
 	}
@@ -98,7 +98,7 @@ func ListAgents(limit int, page int) (agents []Agent, meta Meta, err error) {
 	u.Query().Set("limit", strconv.Itoa(limit))
 	u.Query().Set("page", strconv.Itoa(page))
 
-	err = Get(u.String(), &dto)
+	err = get(u.String(), &dto)
 	if err != nil {
 		return dto.Data, dto.Meta, err
 	}

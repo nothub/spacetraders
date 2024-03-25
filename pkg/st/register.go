@@ -13,7 +13,7 @@ func Register(symbol string, faction FactionSymbol, email string) (token string,
 		} `json:"data"`
 	}
 
-	err = Post(BaseUrl+"/register", struct {
+	err = post(BaseUrl+"/register", struct {
 		Symbol  string        `json:"symbol"`
 		Email   string        `json:"email"`
 		Faction FactionSymbol `json:"faction"`
