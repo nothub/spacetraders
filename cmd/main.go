@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-var elog = log.New(os.Stderr, "", log.LstdFlags|log.Llongfile)
-var ilog = log.New(os.Stderr, "", log.LstdFlags)
+var elog = log.New(os.Stderr, "", log.Llongfile)
+var ilog = log.New(os.Stderr, "", 0)
 
 func main() {
 
