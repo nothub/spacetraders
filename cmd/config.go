@@ -1,15 +1,21 @@
 package main
 
 import (
+	"github.com/nothub/spacetraders/pkg/st"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/nothub/spacetraders/internal/files"
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Token string `yaml:"token"`
+	Symbol  string           `yaml:"symbol"`
+	Email   string           `yaml:"email"`
+	Faction st.FactionSymbol `yaml:"faction"`
+	Token   string           `yaml:"token"`
+	Created time.Time        `yaml:"created"`
 }
 
 var Cfg Config
@@ -28,36 +34,36 @@ func configPath() (path string) {
 	return ConfigPath
 }
 
-func ConfigLoad() error {
+func ConfigLoad() {
+	ilog.Println("loading config...")
+
 	err := files.Touch(configPath())
 	if err != nil {
-		return err
+		elog.Fatalln(err.Error())
 	}
 
 	data, err := os.ReadFile(configPath())
 	if err != nil {
-		return err
+		elog.Fatalln(err.Error())
 	}
 
 	Cfg = Config{}
 	err = yaml.Unmarshal(data, &Cfg)
 	if err != nil {
-		return err
+		elog.Fatalln(err.Error())
 	}
-
-	return nil
 }
 
-func ConfigSave() error {
+func ConfigSave() {
+	ilog.Println("saving config...")
+
 	data, err := yaml.Marshal(Cfg)
 	if err != nil {
-		return err
+		elog.Fatalln(err.Error())
 	}
 
 	err = os.WriteFile(configPath(), data, 0640)
 	if err != nil {
-		return err
+		elog.Fatalln(err.Error())
 	}
-
-	return nil
 }

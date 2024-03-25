@@ -5,6 +5,7 @@ import (
 	"github.com/nothub/spacetraders/pkg/st"
 	"log"
 	"os"
+	"time"
 )
 
 var elog = log.New(os.Stderr, "", log.Llongfile)
@@ -12,23 +13,31 @@ var ilog = log.New(os.Stderr, "", 0)
 
 func main() {
 
-	err := ConfigLoad()
-	if err != nil {
-		elog.Fatalln(err.Error())
+	ConfigLoad()
+
+	if Cfg.Symbol == "" {
+		Cfg.Symbol = random.String(8)
+	}
+
+	if Cfg.Faction == "" {
+		Cfg.Faction = st.FactionCosmic
 	}
 
 	if Cfg.Token == "" {
 		ilog.Println("Token is empty, registering new agent...")
-		token, err := st.RegisterAnon(random.String(8), st.FactionCosmic)
+
+		var err error
+		if Cfg.Email == "" {
+			Cfg.Token, err = st.RegisterAnon(Cfg.Symbol, Cfg.Faction)
+		} else {
+			Cfg.Token, err = st.Register(Cfg.Symbol, Cfg.Faction, Cfg.Email)
+		}
 		if err != nil {
 			elog.Fatalln(err.Error())
 		}
 
-		Cfg.Token = token
-		err = ConfigSave()
-		if err != nil {
-			elog.Fatalln(err.Error())
-		}
+		Cfg.Created = time.Now()
+		ConfigSave()
 	}
 	st.Token = Cfg.Token
 
