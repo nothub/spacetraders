@@ -102,3 +102,27 @@ type ConnectedSystem struct {
 	// (required)
 	Distance int `json:"distance"`
 }
+
+type systemsDto struct {
+	Data []System `json:"data"`
+	Meta Meta     `json:"meta"`
+}
+
+func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
+	var dto systemsDto
+
+	u, err := url.Parse(BaseUrl + "/systems")
+	if err != nil {
+		return dto.Data, dto.Meta, err
+	}
+
+	u.Query().Set("limit", strconv.Itoa(limit))
+	u.Query().Set("page", strconv.Itoa(page))
+
+	err = get(u.String(), &dto)
+	if err != nil {
+		return dto.Data, dto.Meta, err
+	}
+
+	return dto.Data, dto.Meta, nil
+}
