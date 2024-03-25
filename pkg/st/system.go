@@ -1,5 +1,10 @@
 package st
 
+import (
+	"net/url"
+	"strconv"
+)
+
 type System struct {
 	Symbol       string     `json:"symbol"`
 	SectorSymbol string     `json:"sectorSymbol"`
@@ -12,6 +17,7 @@ type System struct {
 		X        int          `json:"x"`
 		Y        int          `json:"y"`
 		Orbitals []struct {
+			Symbol string `json:"symbol"`
 		} `json:"orbitals"`
 		Orbits string `json:"orbits"`
 	} `json:"waypoints"`
