@@ -284,14 +284,14 @@ type MarketTradeGood struct {
 	// The supply level of a trade good.
 	//
 	// (required)
-	Supply TradeGoodSupply `json:"supply"`
+	Supply SupplyLevel `json:"supply"`
 
 	// The activity level of a trade good.
 	// If the good is an import, this represents how strong consumption is.
 	// If the good is an export, this represents how strong the production is for the good.
 	// When activity is strong, consumption or production is near maximum capacity.
 	// When activity is weak, consumption or production is near minimum capacity.
-	Activity TradeGoodActivityLevel `json:"activity"`
+	Activity ActivityLevel `json:"activity"`
 
 	// The price at which this good can be purchased from the market.
 	//
@@ -317,21 +317,21 @@ const (
 )
 
 // The supply level of a trade good.
-type TradeGoodSupply string
+type SupplyLevel string
 
 const (
-	TradeGoodSupplyScarce   TradeGoodSupply = "SCARCE"
-	TradeGoodSupplyLimited  TradeGoodSupply = "LIMITED"
-	TradeGoodSupplyModerate TradeGoodSupply = "MODERATE"
-	TradeGoodSupplyHigh     TradeGoodSupply = "HIGH"
-	TradeGoodSupplyAbundant TradeGoodSupply = "ABUNDANT"
+	SupplyLevelScarce   SupplyLevel = "SCARCE"
+	SupplyLevelLimited  SupplyLevel = "LIMITED"
+	SupplyLevelModerate SupplyLevel = "MODERATE"
+	SupplyLevelHigh     SupplyLevel = "HIGH"
+	SupplyLevelAbundant SupplyLevel = "ABUNDANT"
 )
 
-type TradeGoodActivityLevel string
+type ActivityLevel string
 
 const (
-	TradeGoodActivityLevelWeak       TradeGoodActivityLevel = "WEAK"
-	TradeGoodActivityLevelGrowing    TradeGoodActivityLevel = "GROWING"
-	TradeGoodActivityLevelStrong     TradeGoodActivityLevel = "STRONG"
-	TradeGoodActivityLevelRestricted TradeGoodActivityLevel = "RESTRICTED"
+	ActivityLevelWeak       ActivityLevel = "WEAK"
+	ActivityLevelGrowing    ActivityLevel = "GROWING"
+	ActivityLevelStrong     ActivityLevel = "STRONG"
+	ActivityLevelRestricted ActivityLevel = "RESTRICTED"
 )
