@@ -49,12 +49,10 @@ type Agent struct {
 	ShipCount int `json:"shipCount"`
 }
 
-type agentDto struct {
-	Data Agent `json:"data"`
-}
-
 func GetAgent() (agent Agent, err error) {
-	var dto agentDto
+	var dto struct {
+		Data Agent `json:"data"`
+	}
 
 	err = get(BaseUrl+"/my/agent", &dto)
 	if err != nil {
@@ -65,7 +63,9 @@ func GetAgent() (agent Agent, err error) {
 }
 
 func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
-	var dto agentDto
+	var dto struct {
+		Data Agent `json:"data"`
+	}
 
 	err = get(BaseUrl+"/agents/"+agentSymbol, &dto)
 	if err != nil {
@@ -73,11 +73,6 @@ func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
 	}
 
 	return dto.Data, nil
-}
-
-type agentsDto struct {
-	Data []Agent `json:"data"`
-	Meta Meta    `json:"meta"`
 }
 
 // limit - How many entries to return per page
@@ -88,11 +83,9 @@ type agentsDto struct {
 //
 //	>= 1
 func ListAgents(limit int, page int) (agents []Agent, meta Meta, err error) {
-	var dto agentsDto
-
-	u, err := url.Parse(BaseUrl + "/agents")
-	if err != nil {
-		return dto.Data, dto.Meta, err
+	var dto struct {
+		Data []Agent `json:"data"`
+		Meta Meta    `json:"meta"`
 	}
 
 	u.Query().Set("limit", strconv.Itoa(limit))

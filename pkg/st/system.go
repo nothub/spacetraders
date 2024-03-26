@@ -103,10 +103,11 @@ type ConnectedSystem struct {
 	Distance int `json:"distance"`
 }
 
-type systemsDto struct {
-	Data []System `json:"data"`
-	Meta Meta     `json:"meta"`
-}
+func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
+	var dto struct {
+		Data []System `json:"data"`
+		Meta Meta     `json:"meta"`
+	}
 
 func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
 	var dto systemsDto
