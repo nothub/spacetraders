@@ -89,7 +89,7 @@ func main() {
 		if err != nil {
 			elog.Fatalln(err.Error())
 		}
-		ilog.Printf("Contract: id=%s type=%v", ctr.Id, ctr.Type)
+		ilog.Printf("Contract: %+v", ctr)
 	}
 
 }

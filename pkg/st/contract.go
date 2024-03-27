@@ -149,17 +149,62 @@ func GetContract(contractId string) (contract Contract, err error) {
 	return dto.Data, nil
 }
 
-func AcceptContract() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/7dbc359629250-accept-contract
-	return nil
+// You can only accept contracts that were offered to you, were not accepted
+// yet, and whose deadlines has not passed yet.
+func AcceptContract(contractId string) (agent Agent, contract Contract, err error) {
+	var dto struct {
+		Data struct {
+			Agent    Agent    `json:"agent"`
+			Contract Contract `json:"contract"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/contracts/"+contractId+"/accept", nil, nil, &dto)
+	if err != nil {
+		return agent, contract, err
+	}
+
+	return dto.Data.Agent, dto.Data.Contract, nil
 }
 
-func DeliverCargoToContract() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/8f89f3b4a246e-deliver-cargo-to-contract
-	return nil
+func DeliverCargoToContract(contractId string, shipSymbol string, tradeSymbol string, units int) (contract Contract, cargo ShipCargo, err error) {
+	var dto struct {
+		Data struct {
+			Contract Contract  `json:"contract"`
+			Cargo    ShipCargo `json:"cargo"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/contracts/"+contractId+"/deliver", nil, struct {
+		ShipSymbol  string `json:"shipSymbol"`
+		TradeSymbol string `json:"tradeSymbol"`
+		Units       int    `json:"units"`
+	}{
+		ShipSymbol:  shipSymbol,
+		TradeSymbol: tradeSymbol,
+		Units:       units,
+	}, &dto)
+	if err != nil {
+		return contract, cargo, err
+	}
+
+	return dto.Data.Contract, dto.Data.Cargo, nil
 }
 
-func FulfillContract() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/d4ff41c101af0-fulfill-contract
-	return nil
+// Can only be used on contracts that have all of their delivery terms
+// fulfilled.
+func FulfillContract(contractId string) (agent Agent, contract Contract, err error) {
+	var dto struct {
+		Data struct {
+			Agent    Agent    `json:"agent"`
+			Contract Contract `json:"contract"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/contracts/"+contractId+"/fulfill", nil, nil, &dto)
+	if err != nil {
+		return agent, contract, err
+	}
+
+	return dto.Data.Agent, dto.Data.Contract, nil
 }
