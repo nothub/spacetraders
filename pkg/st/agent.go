@@ -61,19 +61,6 @@ func GetAgent() (agent Agent, err error) {
 	return dto.Data, nil
 }
 
-func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
-	var dto struct {
-		Data Agent `json:"data"`
-	}
-
-	err = get(BaseUrl+"/agents/"+agentSymbol, nil, &dto)
-	if err != nil {
-		return dto.Data, err
-	}
-
-	return dto.Data, nil
-}
-
 // limit - How many entries to return per page
 //
 //	>= 1 && <= 20
@@ -96,4 +83,17 @@ func ListAgents(limit int, page int) (agents []Agent, meta Meta, err error) {
 	}
 
 	return dto.Data, dto.Meta, nil
+}
+
+func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
+	var dto struct {
+		Data Agent `json:"data"`
+	}
+
+	err = get(BaseUrl+"/agents/"+agentSymbol, nil, &dto)
+	if err != nil {
+		return dto.Data, err
+	}
+
+	return dto.Data, nil
 }
