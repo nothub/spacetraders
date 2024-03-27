@@ -11,11 +11,11 @@ import (
 )
 
 type Config struct {
-	Symbol  string           `yaml:"symbol"`
-	Email   string           `yaml:"email"`
-	Faction st.FactionSymbol `yaml:"faction"`
-	Token   string           `yaml:"token"`
-	Created time.Time        `yaml:"created"`
+	Symbol       string           `yaml:"symbol"`
+	Email        string           `yaml:"email"`
+	Faction      st.FactionSymbol `yaml:"faction"`
+	Token        string           `yaml:"token"`
+	TokenCreated time.Time        `yaml:"token-created"`
 }
 
 var Cfg Config

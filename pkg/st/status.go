@@ -13,7 +13,8 @@ type Status struct {
 	Version string `json:"version"`
 
 	// The date when the game server was last reset.
-	ResetDate time.Time `json:"resetDate"`
+	ResetDateRaw string `json:"resetDate"`
+	ResetDate    time.Time
 
 	Description string `json:"description"`
 
@@ -60,7 +61,8 @@ type Status struct {
 	ServerResets struct {
 
 		// The date and time when the game server will reset.
-		Next time.Time `json:"next"`
+		NextRaw string `json:"next"`
+		Next    time.Time
 
 		// How often we intend to reset the game server.
 		Frequency string `json:"frequency"`
@@ -86,5 +88,9 @@ func GetStatus() (status Status, err error) {
 	if err != nil {
 		return status, err
 	}
+
+	status.ResetDate, err = time.Parse(time.DateOnly, status.ResetDateRaw)
+	status.ServerResets.Next, err = time.Parse("2006-01-02T15:04:05.999Z", status.ServerResets.NextRaw)
+
 	return status, nil
 }
