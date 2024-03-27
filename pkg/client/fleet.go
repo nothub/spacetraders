@@ -1,8 +1,22 @@
 package st
 
-func ListShips() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/64435cafd9005-list-ships
-	return nil
+import "strconv"
+
+func ListShips(limit int, page int) (ships []Ship, meta Meta, err error) {
+	var dto struct {
+		Data []Ship `json:"data"`
+		Meta Meta   `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/my/ships", map[string]string{
+		"limit": strconv.Itoa(limit),
+		"page":  strconv.Itoa(page),
+	}, &dto)
+	if err != nil {
+		return ships, meta, err
+	}
+
+	return dto.Data, dto.Meta, nil
 }
 
 func PurchaseShip() (err error) {
