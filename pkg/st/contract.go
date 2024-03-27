@@ -1,6 +1,9 @@
 package st
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 // Contract details.
 type Contract struct {
@@ -116,14 +119,34 @@ type ContractTerms struct {
 	Deliver []ContractDeliverGood `json:"deliver"`
 }
 
-func ListContracts() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/b5d513949b11a-list-contracts
-	return nil
+func ListContracts(limit int, page int) (contracts []Contract, meta Meta, err error) {
+	var dto struct {
+		Data []Contract `json:"data"`
+		Meta Meta       `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/my/contracts", map[string]string{
+		"limit": strconv.Itoa(limit),
+		"page":  strconv.Itoa(page),
+	}, &dto)
+	if err != nil {
+		return dto.Data, dto.Meta, err
+	}
+
+	return dto.Data, dto.Meta, nil
 }
 
-func GetContract() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/2889d8b056533-get-contract
-	return nil
+func GetContract(contractId string) (contract Contract, err error) {
+	var dto struct {
+		Data Contract `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/contracts/"+contractId, nil, &dto)
+	if err != nil {
+		return dto.Data, err
+	}
+
+	return dto.Data, nil
 }
 
 func AcceptContract() (err error) {

@@ -46,30 +46,51 @@ func main() {
 		elog.Fatalln(err.Error())
 	}
 	ilog.Printf("Meta: %++v", meta)
-	ilog.Println("Systems:")
-	for _, sys := range systems {
-		ilog.Printf("  - symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
+	if len(systems) > 0 {
+		ilog.Println("Systems:")
+		for _, sys := range systems {
+			ilog.Printf("  - symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
+		}
+		sys, err := st.GetSystem(systems[0].Symbol)
+		if err != nil {
+			elog.Fatalln(err.Error())
+		}
+		ilog.Printf("System: symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
 	}
-	sys, err := st.GetSystem(systems[0].Symbol)
-	if err != nil {
-		elog.Fatalln(err.Error())
-	}
-	ilog.Printf("System: symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
 
 	factions, meta, err := st.ListFactions(20, 1)
 	if err != nil {
 		elog.Fatalln(err.Error())
 	}
 	ilog.Printf("Meta: %++v", meta)
-	ilog.Println("Factions:")
-	for _, fac := range factions {
-		ilog.Printf("  - symb=%s (%v)", fac.Symbol, fac.Name)
+	if len(factions) > 0 {
+		ilog.Println("Factions:")
+		for _, fac := range factions {
+			ilog.Printf("  - symb=%s (%v)", fac.Symbol, fac.Name)
+		}
+		fac, err := st.GetFaction(string(factions[0].Symbol))
+		if err != nil {
+			elog.Fatalln(err.Error())
+		}
+		ilog.Printf("Faction: %v\t(%v)", fac.Symbol, fac.Name)
 	}
-	fac, err := st.GetFaction(string(factions[0].Symbol))
+
+	contracts, meta, err := st.ListContracts(20, 1)
 	if err != nil {
 		elog.Fatalln(err.Error())
 	}
-	ilog.Printf("Faction: %v\t(%v)", fac.Symbol, fac.Name)
+	ilog.Printf("Meta: %++v", meta)
+	if len(contracts) > 0 {
+		ilog.Println("Contracts:")
+		for _, ctr := range contracts {
+			ilog.Printf("  - id=%s type=%v", ctr.Id, ctr.Type)
+		}
+		ctr, err := st.GetContract(contracts[0].Id)
+		if err != nil {
+			elog.Fatalln(err.Error())
+		}
+		ilog.Printf("Contract: id=%s type=%v", ctr.Id, ctr.Type)
+	}
 
 }
 
