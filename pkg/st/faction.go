@@ -130,7 +130,7 @@ func ListFactions(limit int, page int) (factions []Faction, meta Meta, err error
 		"page":  strconv.Itoa(page),
 	}, &dto)
 	if err != nil {
-		return dto.Data, dto.Meta, err
+		return factions, meta, err
 	}
 
 	return dto.Data, dto.Meta, nil
@@ -143,7 +143,7 @@ func GetFaction(factionSymbol string) (faction Faction, err error) {
 
 	err = get(BaseUrl+"/factions/"+factionSymbol, nil, &dto)
 	if err != nil {
-		return dto.Data, err
+		return faction, err
 	}
 
 	return dto.Data, nil

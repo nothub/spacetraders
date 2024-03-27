@@ -130,7 +130,7 @@ func ListContracts(limit int, page int) (contracts []Contract, meta Meta, err er
 		"page":  strconv.Itoa(page),
 	}, &dto)
 	if err != nil {
-		return dto.Data, dto.Meta, err
+		return contracts, meta, err
 	}
 
 	return dto.Data, dto.Meta, nil
@@ -143,7 +143,7 @@ func GetContract(contractId string) (contract Contract, err error) {
 
 	err = get(BaseUrl+"/my/contracts/"+contractId, nil, &dto)
 	if err != nil {
-		return dto.Data, err
+		return contract, err
 	}
 
 	return dto.Data, nil

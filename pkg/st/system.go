@@ -113,7 +113,7 @@ func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
 		"page":  strconv.Itoa(page),
 	}, &dto)
 	if err != nil {
-		return dto.Data, dto.Meta, err
+		return systems, meta, err
 	}
 
 	return dto.Data, dto.Meta, nil
@@ -127,7 +127,7 @@ func GetSystem(systemSymbol string) (systems System, err error) {
 
 	err = get(BaseUrl+"/systems/"+systemSymbol, nil, &dto)
 	if err != nil {
-		return dto.Data, err
+		return systems, err
 	}
 
 	return dto.Data, nil

@@ -55,7 +55,7 @@ func GetAgent() (agent Agent, err error) {
 
 	err = get(BaseUrl+"/my/agent", nil, &dto)
 	if err != nil {
-		return dto.Data, err
+		return agent, err
 	}
 
 	return dto.Data, nil
@@ -79,7 +79,7 @@ func ListAgents(limit int, page int) (agents []Agent, meta Meta, err error) {
 		"page":  strconv.Itoa(page),
 	}, &dto)
 	if err != nil {
-		return dto.Data, dto.Meta, err
+		return agents, meta, err
 	}
 
 	return dto.Data, dto.Meta, nil
@@ -92,7 +92,7 @@ func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
 
 	err = get(BaseUrl+"/agents/"+agentSymbol, nil, &dto)
 	if err != nil {
-		return dto.Data, err
+		return agent, err
 	}
 
 	return dto.Data, nil
