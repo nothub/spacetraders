@@ -48,13 +48,28 @@ func main() {
 	ilog.Printf("Meta: %++v", meta)
 	ilog.Println("Systems:")
 	for _, sys := range systems {
-		ilog.Printf("  - %v\t(%v)", sys.Symbol, sys.Type)
+		ilog.Printf("  - symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
 	}
-	system, err := st.GetSystem(systems[0].Symbol)
+	sys, err := st.GetSystem(systems[0].Symbol)
 	if err != nil {
 		elog.Fatalln(err.Error())
 	}
-	ilog.Printf("System: %v\t(%v)", system.Symbol, system.Type)
+	ilog.Printf("System: symb=%v type=%v sect=%s", sys.Symbol, sys.Type, sys.SectorSymbol)
+
+	factions, meta, err := st.ListFactions(20, 1)
+	if err != nil {
+		elog.Fatalln(err.Error())
+	}
+	ilog.Printf("Meta: %++v", meta)
+	ilog.Println("Factions:")
+	for _, fac := range factions {
+		ilog.Printf("  - symb=%s (%v)", fac.Symbol, fac.Name)
+	}
+	fac, err := st.GetFaction(string(factions[0].Symbol))
+	if err != nil {
+		elog.Fatalln(err.Error())
+	}
+	ilog.Printf("Faction: %v\t(%v)", fac.Symbol, fac.Name)
 
 }
 

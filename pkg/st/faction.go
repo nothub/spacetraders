@@ -1,5 +1,7 @@
 package st
 
+import "strconv"
+
 type Faction struct {
 	Symbol       FactionSymbol  `json:"symbol"`
 	Name         string         `json:"name"`
@@ -117,12 +119,32 @@ const (
 	FactionTraitEntrepreneurial         FactionTraitSymbol = "ENTREPRENEURIAL"
 )
 
-func ListFactions() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/93c5d5e6ad5b0-list-factions
-	return nil
+func ListFactions(limit int, page int) (factions []Faction, meta Meta, err error) {
+	var dto struct {
+		Data []Faction `json:"data"`
+		Meta Meta      `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/factions", map[string]string{
+		"limit": strconv.Itoa(limit),
+		"page":  strconv.Itoa(page),
+	}, &dto)
+	if err != nil {
+		return dto.Data, dto.Meta, err
+	}
+
+	return dto.Data, dto.Meta, nil
 }
 
-func GetFaction() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/a50decd0f9483-get-faction
-	return nil
+func GetFaction(factionSymbol string) (faction Faction, err error) {
+	var dto struct {
+		Data Faction `json:"data"`
+	}
+
+	err = get(BaseUrl+"/factions/"+factionSymbol, nil, &dto)
+	if err != nil {
+		return dto.Data, err
+	}
+
+	return dto.Data, nil
 }
