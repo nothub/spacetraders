@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/nothub/spacetraders/internal/filez"
-	"github.com/nothub/spacetraders/pkg/st"
+	"github.com/nothub/spacetraders/pkg/client"
 	"gopkg.in/yaml.v3"
 )
 

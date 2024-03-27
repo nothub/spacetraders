@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/nothub/spacetraders/internal/rando"
-	"github.com/nothub/spacetraders/pkg/st"
+	"github.com/nothub/spacetraders/pkg/client"
 )
 
 var elog = log.New(os.Stderr, "", log.Llongfile)
