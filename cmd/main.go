@@ -29,7 +29,7 @@ func main() {
 
 		var err error
 		if Cfg.Email == "" {
-			Cfg.Token, err = st.RegisterAnon(Cfg.Symbol, Cfg.Faction)
+			Cfg.Token, err = st.Register(Cfg.Symbol, Cfg.Faction, "")
 		} else {
 			Cfg.Token, err = st.Register(Cfg.Symbol, Cfg.Faction, Cfg.Email)
 		}
