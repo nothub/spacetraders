@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/nothub/spacetraders/internal/files"
+	"github.com/nothub/spacetraders/internal/filez"
 	"github.com/nothub/spacetraders/pkg/st"
 	"gopkg.in/yaml.v3"
 )
@@ -37,7 +37,7 @@ func configPath() (path string) {
 func ConfigLoad() {
 	ilog.Println("loading config...")
 
-	err := files.Touch(configPath())
+	err := filez.Touch(configPath())
 	if err != nil {
 		elog.Fatalln(err.Error())
 	}
