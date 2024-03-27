@@ -1,5 +1,17 @@
 package st
 
+// Register creates a new agent and ties it to an account. The agent symbol
+// must consist of a 3-14 character string, and will be used to represent your
+// agent. This symbol will prefix the symbol of every ship you own. Agent
+// symbols will be cast to all uppercase characters.
+//
+// This new agent will be tied to a starting faction of your choice, which
+// determines your starting location, and will be granted an authorization
+// token, a contract with their starting faction, a command ship that can fly
+// across space with advanced capabilities, a small probe ship that can be used
+// for reconnaissance, and 150,000 credits.
+//
+// Email can be empty. If set, is used to reserve a call sign between resets.
 func Register(symbol string, faction FactionSymbol, email string) (token string, err error) {
 	var dto struct {
 		Data struct {
@@ -31,9 +43,4 @@ func Register(symbol string, faction FactionSymbol, email string) (token string,
 	}
 
 	return dto.Data.Token, nil
-}
-
-// RegisterAnon will save agent and registration data to config automatically.
-func RegisterAnon(symbol string, faction FactionSymbol) (token string, err error) {
-	return Register(symbol, faction, "")
 }
