@@ -14,34 +14,7 @@ var ilog = log.New(os.Stderr, "", 0)
 
 func main() {
 
-	ConfigLoad()
-
-	if Cfg.Symbol == "" {
-		Cfg.Symbol = random.String(8)
-	}
-
-	if Cfg.Faction == "" {
-		Cfg.Faction = st.FactionCosmic
-	}
-
-	if Cfg.Token == "" {
-		ilog.Println("Token is empty, registering new agent...")
-
-		var err error
-		if Cfg.Email == "" {
-			Cfg.Token, err = st.Register(Cfg.Symbol, Cfg.Faction, "")
-		} else {
-			Cfg.Token, err = st.Register(Cfg.Symbol, Cfg.Faction, Cfg.Email)
-		}
-		if err != nil {
-			elog.Fatalln(err.Error())
-		}
-
-		Cfg.Created = time.Now()
-		ConfigSave()
-	}
-	st.Token = Cfg.Token
-
+	// this is an unauthenticated request because st.Token is not set
 	status, err := st.GetStatus()
 	if err != nil {
 		elog.Fatalln(err.Error())
@@ -51,6 +24,12 @@ func main() {
 	ilog.Printf("Last reset:   %s\n", status.ResetDate)
 	ilog.Printf("Next reset:   %s\n", status.ServerResets.Next)
 	ilog.Printf("Server stats: %+v\n", status.Stats)
+
+	ConfigLoad()
+	if Cfg.Token == "" {
+		register()
+	}
+	st.Token = Cfg.Token
 
 	agent, err := st.GetAgent()
 	if err != nil {
@@ -71,4 +50,26 @@ func main() {
 	system, err := st.GetSystem(systems[0].Symbol)
 	ilog.Printf("System: %v\t(%v)", system.Symbol, system.Type)
 
+}
+
+func register() {
+	ilog.Println("Token is empty, registering new agent...")
+
+	if Cfg.Symbol == "" {
+		Cfg.Symbol = random.String(8)
+	}
+
+	if Cfg.Faction == "" {
+		Cfg.Faction = st.FactionCosmic
+	}
+
+	token, err := st.Register(Cfg.Symbol, Cfg.Faction, Cfg.Email)
+	if err != nil {
+		elog.Fatalln(err.Error())
+	}
+
+	Cfg.Token = token
+	Cfg.TokenCreated = time.Now()
+
+	ConfigSave()
 }
