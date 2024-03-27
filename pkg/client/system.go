@@ -2,6 +2,7 @@ package st
 
 import (
 	"strconv"
+	"strings"
 )
 
 type System struct {
@@ -133,34 +134,106 @@ func GetSystem(systemSymbol string) (systems System, err error) {
 	return dto.Data, nil
 }
 
-func ListWaypointsInSystem() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/32186cf59e324-list-waypoints-in-system
-	return nil
+func ListWaypointsInSystem(
+	systemSymbol string,
+	waypointTraits []WaypointTraitSymbol,
+	waypointType WaypointType,
+	limit int,
+	page int,
+) (
+	waypoints []Waypoint,
+	err error,
+) {
+	var dto struct {
+		Data []Waypoint `json:"data"`
+		Meta Meta       `json:"meta"`
+	}
+
+	traits := make([]string, len(waypointTraits))
+	for _, t := range waypointTraits {
+		traits = append(traits, string(t))
+	}
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints", map[string]string{
+		"limit":  strconv.Itoa(limit),
+		"page":   strconv.Itoa(page),
+		"traits": strings.Join(traits, ","),
+		"type":   string(waypointType),
+	}, &dto)
+	if err != nil {
+		return waypoints, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetWaypoint() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/58e66f2fa8c82-get-waypoint
-	return nil
+func GetWaypoint(systemSymbol string, waypointSymbol string) (waypoint Waypoint, err error) {
+	var dto struct {
+		Data Waypoint `json:"data"`
+		Meta Meta     `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol, nil, &dto)
+	if err != nil {
+		return waypoint, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetMarket() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/a4fed7a0221e0-get-market
-	return nil
+func GetMarket(systemSymbol string, waypointSymbol string) (market Market, err error) {
+	var dto struct {
+		Data Market `json:"data"`
+		Meta Meta   `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol+"/market", nil, &dto)
+	if err != nil {
+		return market, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetShipyard() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/460fe70c0e4c2-get-shipyard
-	return nil
+func GetShipyard(systemSymbol string, waypointSymbol string) (shipyard Shipyard, err error) {
+	var dto struct {
+		Data Shipyard `json:"data"`
+		Meta Meta     `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol+"/shipyard", nil, &dto)
+	if err != nil {
+		return shipyard, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetJumpGate() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/decd101af6414-get-jump-gate
-	return nil
+func GetJumpGate(systemSymbol string, waypointSymbol string) (jumpGate JumpGate, err error) {
+	var dto struct {
+		Data JumpGate `json:"data"`
+		Meta Meta     `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol+"/jump-gate", nil, &dto)
+	if err != nil {
+		return jumpGate, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetConstructionSite() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c4db8d0c02144-get-construction-site
-	return nil
+func GetConstructionSite(systemSymbol string, waypointSymbol string) (construction Construction, err error) {
+	var dto struct {
+		Data Construction `json:"data"`
+		Meta Meta         `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol+"/construction", nil, &dto)
+	if err != nil {
+		return construction, err
+	}
+
+	return dto.Data, nil
 }
 
 // Supply a construction site with the specified good. Requires a waypoint that
