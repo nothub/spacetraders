@@ -163,7 +163,44 @@ func GetConstructionSite() (err error) {
 	return nil
 }
 
-func SupplyConstructionSite() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c78f7d4f260ef-supply-construction-site
-	return nil
+// Supply a construction site with the specified good. Requires a waypoint that
+// is under construction.
+//
+// The good must be in your ship's cargo. The good will be removed from your
+// ship's cargo and added to the construction site's materials.
+func SupplyConstructionSite(
+	systemSymbol string,
+	waypointSymbol string,
+	shipSymbol string,
+	tradeSymbol TradeGoodSymbol,
+	units int,
+) (
+	construction Construction,
+	cargo ShipCargo,
+	err error,
+) {
+	var dto struct {
+		Data struct {
+			Construction Construction `json:"construction"`
+			Cargo        ShipCargo    `json:"cargo"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/systems/"+systemSymbol+"/waypoints/"+waypointSymbol+"/construction/supply",
+		nil,
+		struct {
+			ShipSymbol  string `json:"shipSymbol"`
+			TradeSymbol string `json:"tradeSymbol"`
+			Units       int    `json:"units"`
+		}{
+			ShipSymbol:  shipSymbol,
+			TradeSymbol: string(tradeSymbol),
+			Units:       units,
+		},
+		&dto)
+	if err != nil {
+		return construction, cargo, err
+	}
+
+	return dto.Data.Construction, dto.Data.Cargo, nil
 }
