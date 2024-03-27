@@ -132,3 +132,38 @@ func GetSystem(systemSymbol string) (systems System, err error) {
 
 	return dto.Data, nil
 }
+
+func ListWaypointsInSystem() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/32186cf59e324-list-waypoints-in-system
+	return nil
+}
+
+func GetWaypoint() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/58e66f2fa8c82-get-waypoint
+	return nil
+}
+
+func GetMarket() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/a4fed7a0221e0-get-market
+	return nil
+}
+
+func GetShipyard() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/460fe70c0e4c2-get-shipyard
+	return nil
+}
+
+func GetJumpGate() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/decd101af6414-get-jump-gate
+	return nil
+}
+
+func GetConstructionSite() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c4db8d0c02144-get-construction-site
+	return nil
+}
+
+func SupplyConstructionSite() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c78f7d4f260ef-supply-construction-site
+	return nil
+}

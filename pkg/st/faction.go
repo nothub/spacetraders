@@ -116,3 +116,13 @@ const (
 	FactionTraitFreeMarkets             FactionTraitSymbol = "FREE_MARKETS"
 	FactionTraitEntrepreneurial         FactionTraitSymbol = "ENTREPRENEURIAL"
 )
+
+func ListFactions() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/93c5d5e6ad5b0-list-factions
+	return nil
+}
+
+func GetFaction() (err error) {
+	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/a50decd0f9483-get-faction
+	return nil
+}
