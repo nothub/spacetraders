@@ -1,7 +1,6 @@
 package st
 
 import (
-	"net/url"
 	"strconv"
 )
 
@@ -109,21 +108,27 @@ func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
 		Meta Meta     `json:"meta"`
 	}
 
-func ListSystems(limit int, page int) (systems []System, meta Meta, err error) {
-	var dto systemsDto
-
-	u, err := url.Parse(BaseUrl + "/systems")
-	if err != nil {
-		return dto.Data, dto.Meta, err
-	}
-
-	u.Query().Set("limit", strconv.Itoa(limit))
-	u.Query().Set("page", strconv.Itoa(page))
-
-	err = get(u.String(), &dto)
+	err = get(BaseUrl+"/systems", map[string]string{
+		"limit": strconv.Itoa(limit),
+		"page":  strconv.Itoa(page),
+	}, &dto)
 	if err != nil {
 		return dto.Data, dto.Meta, err
 	}
 
 	return dto.Data, dto.Meta, nil
+}
+
+func GetSystem(systemSymbol string) (systems System, err error) {
+	var dto struct {
+		Data System `json:"data"`
+		Meta Meta   `json:"meta"`
+	}
+
+	err = get(BaseUrl+"/systems/"+systemSymbol, nil, &dto)
+	if err != nil {
+		return dto.Data, err
+	}
+
+	return dto.Data, nil
 }

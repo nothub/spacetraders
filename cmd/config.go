@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/nothub/spacetraders/pkg/st"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/nothub/spacetraders/internal/files"
+	"github.com/nothub/spacetraders/pkg/st"
 	"gopkg.in/yaml.v3"
 )
 

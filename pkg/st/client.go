@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 var HttpClient = http.DefaultClient
@@ -40,15 +41,26 @@ type Meta struct {
 	Limit int `json:"limit"`
 }
 
-func get(url string, model any) error {
-	return do(http.MethodGet, url, nil, model)
+func get(addr string, query map[string]string, model any) error {
+	return do(http.MethodGet, addr, query, nil, model)
 }
 
-func post(url string, body any, model any) error {
-	return do(http.MethodPost, url, body, model)
+func post(addr string, query map[string]string, body any, model any) error {
+	return do(http.MethodPost, addr, query, body, model)
 }
 
-func do(method string, url string, body any, model any) error {
+func do(method string, addr string, query map[string]string, body any, model any) error {
+
+	// apply query params to url
+	if query != nil && len(query) > 0 {
+		q := url.Values{}
+		for k, v := range query {
+			q.Add(k, v)
+		}
+		addr = fmt.Sprintf("%s?%s", addr, q.Encode())
+	}
+
+	//log.Printf("%s %s %T %T\n", method, addr, body, model)
 
 	var buf = bytes.NewBuffer(nil)
 	if body != nil {
@@ -59,7 +71,7 @@ func do(method string, url string, body any, model any) error {
 		buf = bytes.NewBuffer(data)
 	}
 
-	req, err := http.NewRequest(method, url, buf)
+	req, err := http.NewRequest(method, addr, buf)
 	if err != nil {
 		return err
 	}

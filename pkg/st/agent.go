@@ -1,7 +1,6 @@
 package st
 
 import (
-	"net/url"
 	"strconv"
 )
 
@@ -54,7 +53,7 @@ func GetAgent() (agent Agent, err error) {
 		Data Agent `json:"data"`
 	}
 
-	err = get(BaseUrl+"/my/agent", &dto)
+	err = get(BaseUrl+"/my/agent", nil, &dto)
 	if err != nil {
 		return dto.Data, err
 	}
@@ -67,7 +66,7 @@ func GetPublicAgent(agentSymbol string) (agent Agent, err error) {
 		Data Agent `json:"data"`
 	}
 
-	err = get(BaseUrl+"/agents/"+agentSymbol, &dto)
+	err = get(BaseUrl+"/agents/"+agentSymbol, nil, &dto)
 	if err != nil {
 		return dto.Data, err
 	}
@@ -88,10 +87,10 @@ func ListAgents(limit int, page int) (agents []Agent, meta Meta, err error) {
 		Meta Meta    `json:"meta"`
 	}
 
-	u.Query().Set("limit", strconv.Itoa(limit))
-	u.Query().Set("page", strconv.Itoa(page))
-
-	err = get(u.String(), &dto)
+	err = get(BaseUrl+"/agents", map[string]string{
+		"limit": strconv.Itoa(limit),
+		"page":  strconv.Itoa(page),
+	}, &dto)
 	if err != nil {
 		return dto.Data, dto.Meta, err
 	}

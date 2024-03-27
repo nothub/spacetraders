@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/nothub/spacetraders/internal/random"
-	"github.com/nothub/spacetraders/pkg/st"
 	"log"
 	"os"
 	"time"
+
+	"github.com/nothub/spacetraders/internal/random"
+	"github.com/nothub/spacetraders/pkg/st"
 )
 
 var elog = log.New(os.Stderr, "", log.Llongfile)
@@ -60,5 +61,14 @@ func main() {
 	ilog.Printf("Headquarters: %v\n", agent.Headquarters)
 	ilog.Printf("Credits:      %v\n", agent.Credits)
 	ilog.Printf("ShipCount:    %v\n", agent.ShipCount)
+
+	systems, meta, err := st.ListSystems(20, 1)
+	ilog.Printf("Meta: %++v", meta)
+	ilog.Println("Systems:")
+	for _, sys := range systems {
+		ilog.Printf("  - %v\t(%v)", sys.Symbol, sys.Type)
+	}
+	system, err := st.GetSystem(systems[0].Symbol)
+	ilog.Printf("System: %v\t(%v)", system.Symbol, system.Type)
 
 }
