@@ -42,12 +42,18 @@ func main() {
 	ilog.Printf("ShipCount:    %v\n", agent.ShipCount)
 
 	systems, meta, err := st.ListSystems(20, 1)
+	if err != nil {
+		elog.Fatalln(err.Error())
+	}
 	ilog.Printf("Meta: %++v", meta)
 	ilog.Println("Systems:")
 	for _, sys := range systems {
 		ilog.Printf("  - %v\t(%v)", sys.Symbol, sys.Type)
 	}
 	system, err := st.GetSystem(systems[0].Symbol)
+	if err != nil {
+		elog.Fatalln(err.Error())
+	}
 	ilog.Printf("System: %v\t(%v)", system.Symbol, system.Type)
 
 }
