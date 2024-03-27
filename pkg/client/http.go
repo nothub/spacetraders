@@ -51,6 +51,8 @@ func post(addr string, query map[string]string, body any, model any) error {
 
 func do(method string, addr string, query map[string]string, body any, model any) error {
 
+	// TODO: do proper url encoding
+
 	// apply query params to url
 	if query != nil && len(query) > 0 {
 		q := url.Values{}
