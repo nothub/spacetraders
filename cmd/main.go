@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/nothub/spacetraders/internal/rando"
@@ -98,7 +99,7 @@ func register() {
 	ilog.Println("Token is empty, registering new agent...")
 
 	if Cfg.Symbol == "" {
-		Cfg.Symbol = rando.String(8)
+		Cfg.Symbol = strings.ToUpper(rando.String(8))
 	}
 
 	if Cfg.Faction == "" {
