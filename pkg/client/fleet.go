@@ -24,14 +24,30 @@ func PurchaseShip() (err error) {
 	return nil
 }
 
-func GetShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/800936299c838-get-ship
-	return nil
+func GetShip(shipSymbol string) (ship Ship, err error) {
+	var dto struct {
+		Data Ship `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol, nil, &dto)
+	if err != nil {
+		return ship, err
+	}
+
+	return dto.Data, nil
 }
 
-func GetShipCargo() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/1324f523e2c9c-get-ship-cargo
-	return nil
+func GetShipCargo(shipSymbol string) (cargo ShipCargo, err error) {
+	var dto struct {
+		Data ShipCargo `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/cargo", nil, &dto)
+	if err != nil {
+		return cargo, err
+	}
+
+	return dto.Data, nil
 }
 
 func OrbitShip() (err error) {
@@ -49,9 +65,17 @@ func CreateChart() (err error) {
 	return nil
 }
 
-func GetShipCooldown() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/d20ef14bc0742-get-ship-cooldown
-	return nil
+func GetShipCooldown(shipSymbol string) (cooldown Cooldown, err error) {
+	var dto struct {
+		Data Cooldown `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/cooldown", nil, &dto)
+	if err != nil {
+		return cooldown, err
+	}
+
+	return dto.Data, nil
 }
 
 func DockShip() (err error) {
@@ -99,9 +123,17 @@ func PatchShipNav() (err error) {
 	return nil
 }
 
-func GetShipNav() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/6e80adc7cc4f5-get-ship-nav
-	return nil
+func GetShipNav(shipSymbol string) (nav ShipNav, err error) {
+	var dto struct {
+		Data ShipNav `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/nav", nil, &dto)
+	if err != nil {
+		return nav, err
+	}
+
+	return dto.Data, nil
 }
 
 func WarpShip() (err error) {
@@ -149,9 +181,17 @@ func NegotiateContract() (err error) {
 	return nil
 }
 
-func GetMounts() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/23ab20baf0ea8-get-mounts
-	return nil
+func GetMounts(shipSymbol string) (mounts []ShipMount, err error) {
+	var dto struct {
+		Data []ShipMount `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/mounts", nil, &dto)
+	if err != nil {
+		return mounts, err
+	}
+
+	return dto.Data, nil
 }
 
 func InstallMount() (err error) {
@@ -164,9 +204,20 @@ func RemoveMount() (err error) {
 	return nil
 }
 
-func GetScrapShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/7e41557eefa3c-get-scrap-ship
-	return nil
+// Get the amount of value that will be returned when scrapping a ship.
+func GetScrapShip(shipSymbol string) (transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/scrap", nil, &dto)
+	if err != nil {
+		return transaction, err
+	}
+
+	return dto.Data.Transaction, nil
 }
 
 func ScrapShip() (err error) {
@@ -174,9 +225,20 @@ func ScrapShip() (err error) {
 	return nil
 }
 
-func GetRepairShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/4497f006ea9a7-get-repair-ship
-	return nil
+// Get the cost of repairing a ship.
+func GetRepairShip(shipSymbol string) (transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = get(BaseUrl+"/my/ships/"+shipSymbol+"/repair", nil, &dto)
+	if err != nil {
+		return transaction, err
+	}
+
+	return dto.Data.Transaction, nil
 }
 
 func RepairShip() (err error) {
