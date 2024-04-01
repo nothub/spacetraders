@@ -181,6 +181,7 @@ func NegotiateContract() (err error) {
 	return nil
 }
 
+// Get the mounts installed on a ship.
 func GetMounts(shipSymbol string) (mounts []ShipMount, err error) {
 	var dto struct {
 		Data []ShipMount `json:"data"`
@@ -194,14 +195,62 @@ func GetMounts(shipSymbol string) (mounts []ShipMount, err error) {
 	return dto.Data, nil
 }
 
-func InstallMount() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/266f3d0591399-install-mount
-	return nil
+// Install a mount on a ship.
+//
+// In order to install a mount, the ship must be docked and located in a
+// waypoint that has a Shipyard trait. The ship also must have the mount to
+// install in its cargo hold.
+//
+// An installation fee will be deduced by the Shipyard for installing the mount
+// on the ship.
+func InstallMount(shipSymbol string, mountSymbol ShipMountSymbol) (agent Agent, mounts []ShipMount, cargo ShipCargo, transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Agent       Agent       `json:"agent"`
+			Mounts      []ShipMount `json:"mounts"`
+			Cargo       ShipCargo   `json:"cargo"`
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/mounts/install", nil, struct {
+		Symbol string `json:"symbol"`
+	}{
+		Symbol: string(mountSymbol),
+	}, &dto)
+	if err != nil {
+		return agent, mounts, cargo, transaction, err
+	}
+
+	return dto.Data.Agent, dto.Data.Mounts, dto.Data.Cargo, dto.Data.Transaction, nil
 }
 
-func RemoveMount() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/9380132527c1d-remove-mount
-	return nil
+// Remove a mount from a ship.
+//
+// The ship must be docked in a waypoint that has the Shipyard trait, and must
+// have the desired mount that it wish to remove installed.
+//
+// A removal fee will be deduced from the agent by the Shipyard.
+func RemoveMount(shipSymbol string, mountSymbol ShipMountSymbol) (agent Agent, mounts []ShipMount, cargo ShipCargo, transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Agent       Agent       `json:"agent"`
+			Mounts      []ShipMount `json:"mounts"`
+			Cargo       ShipCargo   `json:"cargo"`
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/mounts/remove", nil, struct {
+		Symbol string `json:"symbol"`
+	}{
+		Symbol: string(mountSymbol),
+	}, &dto)
+	if err != nil {
+		return agent, mounts, cargo, transaction, err
+	}
+
+	return dto.Data.Agent, dto.Data.Mounts, dto.Data.Cargo, dto.Data.Transaction, nil
 }
 
 // Get the amount of value that will be returned when scrapping a ship.
