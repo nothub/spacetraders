@@ -220,9 +220,24 @@ func GetScrapShip(shipSymbol string) (transaction Transaction, err error) {
 	return dto.Data.Transaction, nil
 }
 
-func ScrapShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/76039bfbf0cdb-scrap-ship
-	return nil
+// Scrap a ship, removing it from the game and returning a portion of the
+// ship's value to the agent. The ship must be docked in a waypoint that has
+// the Shipyard trait in order to use this function. To preview the amount of
+// value that will be returned, use the Get Ship action.
+func ScrapShip(shipSymbol string) (agent Agent, transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Agent       Agent       `json:"agent"`
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/scrap", nil, nil, &dto)
+	if err != nil {
+		return agent, transaction, err
+	}
+
+	return dto.Data.Agent, dto.Data.Transaction, nil
 }
 
 // Get the cost of repairing a ship.
@@ -241,7 +256,22 @@ func GetRepairShip(shipSymbol string) (transaction Transaction, err error) {
 	return dto.Data.Transaction, nil
 }
 
-func RepairShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/54a08ae25a5da-repair-ship
-	return nil
+// Repair a ship, restoring the ship to maximum condition. The ship must be
+// docked at a waypoint that has the Shipyard trait in order to use this
+// function. To preview the cost of repairing the ship, use the Get action.
+func RepairShip(shipSymbol string) (agent Agent, ship Ship, transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Agent       Agent       `json:"agent"`
+			Ship        Ship        `json:"ship"`
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/repair", nil, nil, &dto)
+	if err != nil {
+		return agent, ship, transaction, err
+	}
+
+	return dto.Data.Agent, dto.Data.Ship, dto.Data.Transaction, nil
 }
