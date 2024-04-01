@@ -19,9 +19,35 @@ func ListShips(limit int, page int) (ships []Ship, meta Meta, err error) {
 	return dto.Data, dto.Meta, nil
 }
 
-func PurchaseShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/403855e2e99ad-purchase-ship
-	return nil
+// Purchase a ship from a Shipyard. In order to use this function, a ship under
+// your agent's ownership must be in a waypoint that has the Shipyard trait,
+// and the Shipyard must sell the type of the desired ship.
+//
+// Shipyards typically offer ship types, which are predefined templates of
+// ships that have dedicated roles. A template comes with a preset of an
+// engine, a reactor, and a frame. It may also include a few modules and
+// mounts.
+func PurchaseShip(shipType ShipType, waypointSymbol string) (agent Agent, ship Ship, transaction Transaction, err error) {
+	var dto struct {
+		Data struct {
+			Agent       Agent       `json:"agent"`
+			Ship        Ship        `json:"ship"`
+			Transaction Transaction `json:"transaction"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships", nil, struct {
+		ShipType       string `json:"shipType"`
+		WaypointSymbol string `json:"waypointSymbol"`
+	}{
+		ShipType:       string(shipType),
+		WaypointSymbol: waypointSymbol,
+	}, &dto)
+	if err != nil {
+		return agent, ship, transaction, err
+	}
+
+	return dto.Data.Agent, dto.Data.Ship, dto.Data.Transaction, nil
 }
 
 func GetShip(shipSymbol string) (ship Ship, err error) {
