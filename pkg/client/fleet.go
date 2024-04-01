@@ -106,9 +106,27 @@ func ShipRefine() (err error) {
 	return nil
 }
 
-func CreateChart() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/177f127c7f888-create-chart
-	return nil
+// Command a ship to chart the waypoint at its current location.
+//
+// Most waypoints in the universe are uncharted by default. These waypoints
+// have their traits hidden until they have been charted by a ship.
+//
+// Charting a waypoint will record your agent as the one who created the chart,
+// and all other agents would also be able to see the waypoint's traits.
+func CreateChart(shipSymbol string) (chart Chart, waypoint Waypoint, err error) {
+	var dto struct {
+		Data struct {
+			Chart    Chart    `json:"chart"`
+			Waypoint Waypoint `json:"waypoint"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/orbit", nil, nil, &dto)
+	if err != nil {
+		return chart, waypoint, err
+	}
+
+	return dto.Data.Chart, dto.Data.Waypoint, nil
 }
 
 func GetShipCooldown(shipSymbol string) (cooldown Cooldown, err error) {
