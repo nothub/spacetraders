@@ -76,9 +76,29 @@ func GetShipCargo(shipSymbol string) (cargo ShipCargo, err error) {
 	return dto.Data, nil
 }
 
-func OrbitShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/08777d60b6197-orbit-ship
-	return nil
+// Attempt to move your ship into orbit at its current location. The request
+// will only succeed if your ship is capable of moving into orbit at the time
+// of the request.
+//
+// Orbiting ships are able to do actions that require the ship to be above
+// surface such as navigating or extracting, but cannot access elements in
+// their current waypoint, such as the market or a shipyard.
+//
+// The endpoint is idempotent - successive calls will succeed even if the ship
+// is already in orbit.
+func OrbitShip(shipSymbol string) (nav ShipNav, err error) {
+	var dto struct {
+		Data struct {
+			Nav ShipNav `json:"nav"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/orbit", nil, nil, &dto)
+	if err != nil {
+		return nav, err
+	}
+
+	return dto.Data.Nav, nil
 }
 
 func ShipRefine() (err error) {
