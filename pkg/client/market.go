@@ -308,6 +308,11 @@ type MarketTradeGood struct {
 	SellPrice int `json:"sellPrice"`
 }
 
+type TradeGoodStack struct {
+	Symbol TradeGoodSymbol `json:"tradeSymbol"`
+	Units  int             `json:"units"`
+}
+
 type TradeGoodType string
 
 const (

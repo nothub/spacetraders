@@ -101,9 +101,38 @@ func OrbitShip(shipSymbol string) (nav ShipNav, err error) {
 	return dto.Data.Nav, nil
 }
 
-func ShipRefine() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c42b57743a49f-ship-refine
-	return nil
+// Attempt to refine the raw materials on your ship. The request will only
+// succeed if your ship is capable of refining at the time of the request. In
+// order to be able to refine, a ship must have goods that can be refined and
+// have installed a Refinery module that can refine it.
+//
+// When refining, 30 basic goods will be converted into 10 processed goods.
+func ShipRefine(shipSymbol string, produce RefineYield) (
+	cargo ShipCargo,
+	cooldown Cooldown,
+	produced []TradeGoodStack,
+	consumed []TradeGoodStack,
+	err error,
+) {
+	var dto struct {
+		Data struct {
+			Cargo    ShipCargo        `json:"cargo"`
+			Cooldown Cooldown         `json:"cooldown"`
+			Produced []TradeGoodStack `json:"produced"`
+			Consumed []TradeGoodStack `json:"consumed"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/refine", nil, struct {
+		Produce string `json:"produce"`
+	}{
+		Produce: string(produce),
+	}, &dto)
+	if err != nil {
+		return cargo, cooldown, produced, consumed, err
+	}
+
+	return dto.Data.Cargo, dto.Data.Cooldown, dto.Data.Produced, dto.Data.Consumed, nil
 }
 
 // Command a ship to chart the waypoint at its current location.
