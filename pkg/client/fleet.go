@@ -171,9 +171,28 @@ func GetShipCooldown(shipSymbol string) (cooldown Cooldown, err error) {
 	return dto.Data, nil
 }
 
-func DockShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/a1061ae6545d5-dock-ship
-	return nil
+// Attempt to dock your ship at its current location. Docking will only succeed
+// if your ship is capable of docking at the time of the request.
+//
+// Docked ships can access elements in their current location, such as the
+// market or a shipyard, but cannot do actions that require the ship to be
+// above surface such as navigating or extracting.
+//
+// The endpoint is idempotent - successive calls will succeed even if the ship
+// is already docked.
+func DockShip(shipSymbol string) (nav ShipNav, err error) {
+	var dto struct {
+		Data struct {
+			Nav ShipNav `json:"nav"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/dock", nil, nil, &dto)
+	if err != nil {
+		return nav, err
+	}
+
+	return dto.Data.Nav, nil
 }
 
 // Create surveys on a waypoint that can be extracted such as asteroid fields.
