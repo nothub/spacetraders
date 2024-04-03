@@ -233,9 +233,26 @@ func ExtractResources() (err error) {
 	return nil
 }
 
-func SiphonResources() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/f6c0d7877c43a-siphon-resources
-	return nil
+// Siphon gases, such as hydrocarbon, from gas giants.
+//
+// The ship must be in orbit to be able to siphon and must have siphon mounts
+// and a gas processor installed.
+func SiphonResources(shipSymbol string) (cooldown Cooldown, siphon Siphon, cargo ShipCargo, events []ShipConditionEventSymbol, err error) {
+	var dto struct {
+		Data struct {
+			Cooldown Cooldown                   `json:"cooldown"`
+			Siphon   Siphon                     `json:"siphon"`
+			Cargo    ShipCargo                  `json:"cargo"`
+			Events   []ShipConditionEventSymbol `json:"events"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/siphon", nil, nil, &dto)
+	if err != nil {
+		return cooldown, siphon, cargo, events, err
+	}
+
+	return dto.Data.Cooldown, dto.Data.Siphon, dto.Data.Cargo, dto.Data.Events, nil
 }
 
 func ExtractResourcesWithSurvey() (err error) {
