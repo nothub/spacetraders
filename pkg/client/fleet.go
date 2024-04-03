@@ -325,14 +325,33 @@ func ScanSystems(shipSymbol string) (cooldown Cooldown, systems []ScannedSystem,
 	return dto.Data.Cooldown, dto.Data.Systems, nil
 }
 
-func ScanWaypoints() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/23dbc0fed17ec-scan-waypoints
-	return nil
+// Scan for nearby waypoints, retrieving detailed information on each waypoint
+// in range. Scanning uncharted waypoints will allow you to ignore their
+// uncharted state and will list the waypoints' traits.
+//
+// Requires a ship to have the "Sensor Array" mount installed to use.
+//
+// The ship will enter a cooldown after using this function, during which it
+// cannot execute certain actions.
+func ScanWaypoints(shipSymbol string) (cooldown Cooldown, waypoints []ScannedWaypoint, err error) {
+	var dto struct {
+		Data struct {
+			Cooldown  Cooldown          `json:"cooldown"`
+			Waypoints []ScannedWaypoint `json:"waypoints"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/scan/waypoints", nil, nil, &dto)
+	if err != nil {
+		return cooldown, waypoints, err
+	}
+
+	return dto.Data.Cooldown, dto.Data.Waypoints, nil
 }
 
 // Scan for nearby ships, retrieving information for all ships in range.
 //
-// Requires a ship to have the Sensor Array mount installed to use.
+// Requires a ship to have the "Sensor Array" mount installed to use.
 //
 // The ship will enter a cooldown after using this function, during which it
 // cannot execute certain actions.
