@@ -316,9 +316,30 @@ func TransferCargo() (err error) {
 	return nil
 }
 
-func NegotiateContract() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/1582bafa95003-negotiate-contract
-	return nil
+// Negotiate a new contract with the HQ.
+//
+// In order to negotiate a new contract, an agent must not have ongoing or
+// offered contracts over the allowed maximum amount. Currently the maximum
+// contracts an agent can have at a time is 1.
+//
+// Once a contract is negotiated, it is added to the list of contracts offered
+// to the agent, which the agent can then accept.
+//
+// The ship must be present at any waypoint with a faction present to negotiate
+// a contract with that faction.
+func NegotiateContract(shipSymbol string) (contract Contract, err error) {
+	var dto struct {
+		Data struct {
+			Contract Contract `json:"contract"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/negotiate/contract", nil, nil, &dto)
+	if err != nil {
+		return contract, err
+	}
+
+	return dto.Data.Contract, nil
 }
 
 // Get the mounts installed on a ship.
