@@ -296,9 +296,26 @@ func ScanWaypoints() (err error) {
 	return nil
 }
 
-func ScanShips() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/74da68b7c32a7-scan-ships
-	return nil
+// Scan for nearby ships, retrieving information for all ships in range.
+//
+// Requires a ship to have the Sensor Array mount installed to use.
+//
+// The ship will enter a cooldown after using this function, during which it
+// cannot execute certain actions.
+func ScanShips(shipSymbol string) (cooldown Cooldown, ships []ScannedShip, err error) {
+	var dto struct {
+		Data struct {
+			Cooldown Cooldown      `json:"cooldown"`
+			Ships    []ScannedShip `json:"ships"`
+		} `json:"data"`
+	}
+
+	err = post(BaseUrl+"/my/ships/"+shipSymbol+"/scan/ships", nil, nil, &dto)
+	if err != nil {
+		return cooldown, ships, err
+	}
+
+	return dto.Data.Cooldown, dto.Data.Ships, nil
 }
 
 func RefuelShip() (err error) {
