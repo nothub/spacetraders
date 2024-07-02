@@ -37,7 +37,7 @@ func configPath() (path string) {
 func ConfigLoad() {
 	ilog.Println("loading config...")
 
-	err := filez.Touch(configPath())
+	err := filez.MkFile(configPath())
 	if err != nil {
 		elog.Fatalln(err.Error())
 	}

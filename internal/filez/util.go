@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func Touch(path string) error {
+func MkFile(path string) error {
 	info, err := os.Stat(path)
 	if err == nil {
 		// file exists
