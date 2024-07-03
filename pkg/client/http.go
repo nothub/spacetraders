@@ -99,6 +99,7 @@ func do(method string, addr string, query map[string]string, body any, model any
 	if res.StatusCode/100 != 2 {
 		// handle all non 2xx status codes
 		switch res.StatusCode {
+		// TODO: what error codes have to be checked for an ErrorResponse body?
 		case http.StatusTooManyRequests:
 			// TODO: handle directly here in the lib? OR: return rate limit error with relevant infos
 			return ErrRateLimit
