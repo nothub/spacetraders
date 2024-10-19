@@ -261,7 +261,7 @@ func ExtractResourcesWithSurvey() (err error) {
 }
 
 func JettisonCargo() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/3b0f8b69f56ac-jettison-cargo
+	// TODO(#4): https://spacetraders.stoplight.io/docs/spacetraders/3b0f8b69f56ac-jettison-cargo
 	return nil
 }
 
