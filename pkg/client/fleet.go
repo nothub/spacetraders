@@ -271,7 +271,7 @@ func JumpShip() (err error) {
 }
 
 func NavigateShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/c766b84253edc-navigate-ship
+	// TODO(#6): https://spacetraders.stoplight.io/docs/spacetraders/c766b84253edc-navigate-ship
 	return nil
 }
 
