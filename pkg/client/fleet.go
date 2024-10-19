@@ -276,7 +276,7 @@ func NavigateShip() (err error) {
 }
 
 func PatchShipNav() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/34a305032ec79-patch-ship-nav
+	// TODO(#7): https://spacetraders.stoplight.io/docs/spacetraders/34a305032ec79-patch-ship-nav
 	return nil
 }
 
