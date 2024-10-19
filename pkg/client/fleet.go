@@ -229,7 +229,7 @@ func CreateSurvey(shipSymbol string) (cooldown Cooldown, surveys []Survey, err e
 }
 
 func ExtractResources() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/b3931d097608d-extract-resources
+	// TODO(#2): https://spacetraders.stoplight.io/docs/spacetraders/b3931d097608d-extract-resources
 	return nil
 }
 
