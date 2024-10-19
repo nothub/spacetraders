@@ -101,7 +101,7 @@ func do(method string, addr string, query map[string]string, body any, model any
 		switch res.StatusCode {
 		// TODO(#14): what error codes have to be checked for an ErrorResponse body?
 		case http.StatusTooManyRequests:
-			// TODO: handle directly here in the lib? OR: return rate limit error with relevant infos
+			// TODO(#15): handle directly here in the lib? OR: return rate limit error with relevant infos
 			return ErrRateLimit
 		default:
 			return fmt.Errorf("http response: %s", res.Status)
