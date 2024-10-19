@@ -28,6 +28,7 @@ func main() {
 
 	ConfigLoad()
 	if Cfg.Token == "" {
+		ilog.Println("Token is empty, registering new agent...")
 		register()
 	}
 	st.Token = Cfg.Token
@@ -96,8 +97,6 @@ func main() {
 }
 
 func register() {
-	ilog.Println("Token is empty, registering new agent...")
-
 	if Cfg.Symbol == "" {
 		Cfg.Symbol = strings.ToUpper(rando.String(8))
 	}
