@@ -85,7 +85,7 @@ func do(method string, addr string, query map[string]string, body any, model any
 	// we always want response data formatted as json
 	req.Header.Set("Accept", "application/json")
 
-	// if we have a body, it is always in json format
+	// if we send a body, it will always be json formatted
 	// reminder: empty json '{}' is >0 len too
 	if buf.Len() > 0 {
 		req.Header.Set("Content-Type", "application/json")
