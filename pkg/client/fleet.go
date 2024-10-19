@@ -266,7 +266,7 @@ func JettisonCargo() (err error) {
 }
 
 func JumpShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/19f0dd2d633de-jump-ship
+	// TODO(#5): https://spacetraders.stoplight.io/docs/spacetraders/19f0dd2d633de-jump-ship
 	return nil
 }
 
