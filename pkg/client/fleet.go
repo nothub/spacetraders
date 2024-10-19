@@ -294,7 +294,7 @@ func GetShipNav(shipSymbol string) (nav ShipNav, err error) {
 }
 
 func WarpShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/faaf6603fc732-warp-ship
+	// TODO(#8): https://spacetraders.stoplight.io/docs/spacetraders/faaf6603fc732-warp-ship
 	return nil
 }
 
