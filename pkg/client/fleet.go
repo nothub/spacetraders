@@ -256,7 +256,7 @@ func SiphonResources(shipSymbol string) (cooldown Cooldown, siphon Siphon, cargo
 }
 
 func ExtractResourcesWithSurvey() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/cdf110a7af0ea-extract-resources-with-survey
+	// TODO(#3): https://spacetraders.stoplight.io/docs/spacetraders/cdf110a7af0ea-extract-resources-with-survey
 	return nil
 }
 
