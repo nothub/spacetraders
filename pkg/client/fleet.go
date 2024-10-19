@@ -372,7 +372,7 @@ func ScanShips(shipSymbol string) (cooldown Cooldown, ships []ScannedShip, err e
 }
 
 func RefuelShip() (err error) {
-	// TODO: https://spacetraders.stoplight.io/docs/spacetraders/1bfb58c5239dd-refuel-ship
+	// TODO(#10): https://spacetraders.stoplight.io/docs/spacetraders/1bfb58c5239dd-refuel-ship
 	return nil
 }
 
